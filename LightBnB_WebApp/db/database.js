@@ -161,27 +161,27 @@ const getAllProperties = function(options, limit = 10) {
   }
 
   // 4
+  //if an owner_id is passed in, only return properties belonging to that owner.
   if (options.owner_id) {
 
     queryParams.push(options.owner_id);
     queryString += `AND owner_id = $${queryParams.length} `;
   }
 
-
-  if (options.minimum_price_per_night && options.maximum_price_per_night) {
+  //if a minimum_price_per_night and a maximum_price_per_night, only return properties within that price range.
+  if (options.minimum_price_per_night && options.maximum_price_per_night) { //if both min and max price are provided
     queryParams.push(options.minimum_price_per_night * 100);
     queryParams.push(options.maximum_price_per_night * 100);
-    queryString += `AND (cost_per_night >= $${
-      queryParams.length - 1
-    } AND cost_per_night <= $${queryParams.length})\n`;
+    queryString += `AND (cost_per_night >= $${ //cost_per_night is in cents so multiply by 100
+      queryParams.length - 1 //subtract 1 to get the index of the previous element
+    } AND cost_per_night <= $${queryParams.length})\n`; //use the index of the last element
   }
-
-  
 
   queryString += `GROUP BY properties.id `;
 
+  //if a minimum_rating is passed in, only return properties with an average rating equal to or higher than that.
   if (options.minimum_rating) {
-
+    //get the average rating of the property and filter by the minimum rating
     queryParams.push(options.minimum_rating);
     queryString += `HAVING avg(property_reviews.rating) >= $${queryParams.length}\n`;
   }
