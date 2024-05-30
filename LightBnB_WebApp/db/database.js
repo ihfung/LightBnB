@@ -206,9 +206,9 @@ const getAllProperties = function(options, limit = 10) {
  */
 const addProperty = function(property) {
   
-  const propertyId = Object.keys(properties).length + 1;
-  property.id = propertyId;
-  properties[propertyId] = property;
+  //const propertyId = Object.keys(properties).length + 1;
+  //property.id = propertyId;
+  //properties[propertyId] = property;
   //return Promise.resolve(property);
   
   return pool.query(
