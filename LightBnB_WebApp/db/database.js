@@ -41,7 +41,7 @@ const getUserWithEmail = function(email) {
     'SELECT users.* FROM users WHERE users.email = $1;',
     [email])
     .then((result) => {
-      console.log(result.rows[0]);
+    
       return result.rows[0];
     })
     .catch((err) => {
@@ -57,10 +57,10 @@ const getUserWithEmail = function(email) {
 const getUserWithId = function(id) {
   //return Promise.resolve(users[id]);
   return pool.query(
-    'SELECT users.* FROM users WHERE users.id LIKE $1;',
+    'SELECT users.* FROM users WHERE users.id = $1;',
     [id])
     .then((result) => {
-      console.log(result.rows);
+     
       return result.rows[0];
     })
     .catch((err) => {
@@ -84,7 +84,7 @@ const addUser = function(user) {
     'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *;',
     [user.name, user.email, user.password])
     .then((result) => {
-      console.log(result.rows[0]);
+      
       return result.rows[0];
     })
     .catch((err) => {
