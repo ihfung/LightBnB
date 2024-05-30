@@ -170,8 +170,8 @@ const getAllProperties = function(options, limit = 10) {
 
   if (options.minimum_price_per_night && options.maximum_price_per_night) {
 
-    queryParams.push(options.minimum_price_per_night * 100);
-    queryParams.push(options.maximum_price_per_night * 100);
+    queryParams.push(options.minimum_price_per_night);
+    queryParams.push(options.maximum_price_per_night);
     queryString += `AND cost_per_night >= $${queryParams.length - 1} AND cost_per_night <= $${queryParams.length} `;
   }
 
@@ -179,7 +179,7 @@ const getAllProperties = function(options, limit = 10) {
 
     if (queryParams.length > 0) {
     
-      queryParams.push(options.minimum_price_per_night * 100);
+      queryParams.push(options.minimum_price_per_night);
       queryString += `AND cost_per_night >= $${queryParams.length} `;
     }
   }
@@ -188,7 +188,7 @@ const getAllProperties = function(options, limit = 10) {
   
     if (queryParams.length > 0) {
     
-      queryParams.push(options.maximum_price_per_night * 100);
+      queryParams.push(options.maximum_price_per_night);
       queryString += `AND cost_per_night <= $${queryParams.length} `;
     }
     
@@ -198,12 +198,8 @@ const getAllProperties = function(options, limit = 10) {
 
   if (options.minimum_rating) {
 
-    if (queryParams.length > 0) {
-  
-      queryParams.push(options.minimum_rating);
-      queryString += `AND property_reviews.rating >= $${queryParams.length} `;
-    
-    }
+    queryParams.push(options.minimum_rating);
+    queryString += `HAVING avg(rating) >= $${queryParams.length}\n`;
   }
 
   queryParams.push(limit);
