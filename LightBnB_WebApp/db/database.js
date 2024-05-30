@@ -160,47 +160,48 @@ const getAllProperties = function(options, limit = 10) {
   }
 
   // 4
+  if (options.owner_id) {
+
+    queryParams.push(options.owner_id);
+    queryString += `WHERE owner_id = $${queryParams.length} `;
+  }
 
   if (options.minimum_price_per_night) {
 
-    if (queryParams.length < 1) {
-      queryParams.push(options.minimum_price_per_night);
-      queryString += `WHERE cost_per_night > $${queryParams.length} `;
-    }
-
+    queryString += `WHERE`;
+    
     if (queryParams.length > 0) {
-      
-      queryParams.push(options.minimum_price_per_night);
-      queryString += `AND cost_per_night > $${queryParams.length} `;
+      queryString += `AND `;
     }
-   
+    
+    queryParams.push(options.minimum_price_per_night);
+    queryString += `cost_per_night >= $${queryParams.length} `;
+      
   }
 
   if (options.maximum_price_per_night) {
 
-    if (queryParams.length < 1) {
-      queryParams.push(options.maximum_price_per_night);
-      queryString += `WHERE cost_per_night < $${queryParams.length} `;
-    }
-
+    queryString += `WHERE`;
+    
     if (queryParams.length > 0) {
-      queryParams.push(options.maximum_price_per_night);
-      queryString += `AND cost_per_night < $${queryParams.length} `;
+      queryString += `AND `;
     }
+    queryParams.push(`${options.maximum_price_per_night}`);
+    queryString += `cost_per_night <= $${queryParams.length} `;
+    
     
   }
 
   if (options.minimum_rating) {
 
-    if (queryParams.length < 1) {
-      queryParams.push(options.minimum_rating);
-      queryString += `WHERE property_reviews.rating >= $${queryParams.length} `;
-    }
-
+    queryString += `WHERE`;
+    
     if (queryParams.length > 0) {
-      queryParams.push(options.minimum_rating);
-      queryString += `AND property_reviews.rating >= $${queryParams.length} `;
+      queryString += `AND `;
     }
+    queryParams.push(`${options.minimum_rating}`);
+    queryString += `AND property_reviews.rating >= $${queryParams.length} `;
+    
     
   }
 
